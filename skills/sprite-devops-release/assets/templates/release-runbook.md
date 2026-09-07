@@ -1,5 +1,7 @@
 # 发布手册
 
+<!-- 保存到业务仓库的 docs/devops/<feature-id>/operations.md，附件放在同一功能目录的 evidence/ 下；<feature-id> 替换为实际功能标识，也可直接放在 docs/devops/。填写时移除此说明。 -->
+
 ## 发布目标
 
 <版本、提交或构建；填写目标环境和实际产物，区分准备状态与已执行状态>
