@@ -1,51 +1,94 @@
 # devops
 
-独立 DevOps 角色：准备与执行已授权的构建、发布和恢复。
+发布运维角色与三个独立阶段 Skill：准备真实发布路径，完成已授权执行，并验证失败后的恢复结果。
 
-## 复制到 AI 聊天
+## Skill 能力
 
-把下面这段粘贴到当前项目的 AI 聊天，让 AI 读取手册、自行识别客户端并放置资源。
+| Skill | 负责什么 | 产出 |
+| --- | --- | --- |
+| [sprite-devops-release](skills/sprite-devops-release/SKILL.md) | 总流程、阶段选择与执行标准 | 明确当前阶段和完成条件 |
+| [sprite-devops-prepare](skills/sprite-devops-prepare/SKILL.md) | 核对真实配置、发布和恢复条件 | 可执行发布手册与具体缺口 |
+| [sprite-devops-execute](skills/sprite-devops-execute/SKILL.md) | 已授权构建、发布及健康监控 | 真实操作与验证记录 |
+| [sprite-devops-recover](skills/sprite-devops-recover/SKILL.md) | 核对失败状态、按授权恢复并检查 | 恢复结果、证据和剩余影响 |
 
 ```text
-请阅读 https://github.com/ai-sprites/devops 的 README、接入手册和资源清单，将 sprite-devops 接入当前项目，一并带上本职能力 sprite-devops-release 的完整 Skill、工作流和模板。
-请自行识别当前客户端及项目已有结构，使用同一明确版本的资源。角色正文、Skill 和模板原样完整拷贝，只适配必要的目录与客户端元数据格式，不重新概括、改写或删减内容，保留我的项目规则和自定义；其他专项 Skill 按我的明确请求或实际任务需要处理。
-资料 host repo 和产物业务仓库已明确的直接沿用，缺项合并用白话问一次，允许稍后配置。本角色生成的文档、记录和验证证据统一放在业务仓库的 docs/devops/ 下，可再按功能分子目录；旧散落产物保留内容迁入，并同步引用和已有索引。需要跨 Git 资料桥接时按手册自动补齐并告知我，不另外索取安装确认。
-完成后核对实际文件与相对引用，说明采用版本、保存位置、如何调用，以及当前客户端确需我完成的加载步骤。只有聊天权限时先在本会话使用，明确没有写入项目；不能读取源文件时直接说明，不自行编一个替代版本。
+skills/
+├── sprite-devops-release/
+│   ├── SKILL.md
+│   ├── references/        完整工作方法、模板与交付规则
+│   └── assets/templates/  完整发布手册模板
+├── sprite-devops-prepare/
+│   └── SKILL.md
+├── sprite-devops-execute/
+│   └── SKILL.md
+└── sprite-devops-recover/
+    └── SKILL.md
 ```
 
-**[详细接入手册](docs/installation.md)** 说明 AI 如何选择资源、识别客户端、放置文件、处理已有内容和验证结果。用户无需执行安装命令；资料位置会主动引导确认，也可稍后配置。
+默认安装总流程与三个阶段，保持四个同级目录。每个阶段都有输入、实质步骤、输出和完成检查，共用 `sprite-devops-release/references/` 与 `assets/`，不要求开发或测试角色先安装。
 
-## 资源清单
+## 工作顺序
 
-本清单对应当前阅读的仓库版本，资源链接随该页面或 checkout 的版本变化。接入时先固定为一个完整 Git 提交，再读取该提交的同批资源。历史 **v0.2.0** 仍可明确选用，但内容以该标签为准。角色 MD 定义职责与清单，具体能力在 Skill 中；本职 Skill 默认随角色接入，完整保留其工作流、模板和相对目录。安装资源不等于生成所有业务文档。
+```text
+请求 / 版本 / 构建部署配置 / 测试证据
+        │
+PREPARE sprite-devops-prepare  → 发布手册与恢复安排
+        │ 已有明确授权且条件满足
+EXECUTE sprite-devops-execute  → 实际发布、健康与监控证据
+        ├─ 成功 → 交付
+        └─ 失败
+RECOVER sprite-devops-recover  → 核对状态、恢复并验证
+```
+
+已有有效手册直接执行，已有故障直接恢复，只补受影响的准备。准备完成不等于已经上线，恢复命令存在不等于经过演练；已有明确执行授权沿用，不重复问，只暂停依赖缺失决定的操作。
+
+## 直接使用
+
+> 用 `$sprite-devops-release` 检查项目真实发布方式，准备发布与恢复步骤，按当前已有授权执行并核对结果。
+
+> 用 `$sprite-devops-prepare` 为这个版本准备可执行发布手册。
+
+> 用 `$sprite-devops-execute` 按手册和已有授权发布，完成健康检查与监控观察。
+
+> 用 `$sprite-devops-recover` 先查清这次失败的真实状态，再按已有授权恢复并验证。
+
+客户端不支持 `$` 调用时，让 AI 读取保存的同名 `SKILL.md`；也可直接使用 [发布运维角色](templates/agent.md)。读取说明、保存资源、实际加载、启动原生子代理和执行任务分别按真实结果判断。
+
+## 接入当前项目
+
+```text
+请读取 https://github.com/ai-sprites/devops 的 README 和接入手册，将 sprite-devops 角色及 sprite-devops-release、sprite-devops-prepare、sprite-devops-execute、sprite-devops-recover 四个完整 Skill 接入当前项目。
+固定同一明确版本，原样复制角色、全部 SKILL.md、参考与模板，保持四个同级目录、名称和内部相对引用；只适配当前客户端目录、元数据和入口。保留项目规则、自定义和未选资源，不合并阶段、不用摘要替代原文。
+资料来源和业务仓库已有选择就沿用，缺项合并用白话问一次，可稍后配置。文档、记录和验证证据统一放业务仓库 docs/devops/；旧产物保留内容迁入并同步引用与已有索引。跨 Git 确有需要时按手册补齐 bridge 并告知，不另外索取安装确认。
+完成后核对实际文件、引用、采用版本和加载状态。旧版按手册保护自定义并补齐阶段；只有聊天权限时明确未写入项目，读取不到原文就说明缺项。
+```
+
+[接入手册](docs/installation.md) 说明完整安装、升级和加载检查，用户无需执行安装命令。角色可以自由组合，也可只安装所需阶段及其依赖。
+
+## 产物与交接
+
+发布准备默认保存完整发布手册，包含前提、执行顺序、健康/观察窗口、负责人和未决项，以及回滚、不可逆影响和恢复验证；实际执行后在同一手册追加结果。小型答疑不强建空文档，不编造命令、阈值、负责人、批准或执行证据。
+
+手册、执行记录、日志、截图与必要附件统一放业务仓库 `docs/devops/`，可按功能分组；产品代码、测试、CI/CD、IaC、部署配置和构建产物保留工程原目录。旧产物保留内容迁入、避免覆盖并同步引用及已有索引。详见 [模板与交付](skills/sprite-devops-release/references/delivery.md) 和 [产物交接](docs/artifact-handoff.md)。
+
+资料 host repo、版本和功能/文件由用户指定或沿用项目约定；普通本地资料和纯接入不安装 bridge，确需跨 Git 读取、固定版本、比较或留存时复用或补齐。更新、追加和移除只处理指定范围，保护自定义，见 [维护规则](docs/installation.md#已有内容与后续维护)。
+
+## 完整资源
+
+<details>
+<summary>角色、阶段、共享参考与模板清单</summary>
+
+清单对应当前页面或 checkout 版本。接入固定完整 Git 提交后读取同批资源；历史 **v0.2.0** 可明确选用，以该标签内容为准。安装资源不等于生成全部业务文档。
 
 | 资源 | 用途 | 接入范围 |
 | --- | --- | --- |
-| [templates/agent.md](templates/agent.md) | 职责、边界与交付检查清单 | 默认接入 |
-| [skills/sprite-devops-release/SKILL.md](skills/sprite-devops-release/SKILL.md) | 本职能力入口 | 随角色默认完整接入 |
+| [templates/agent.md](templates/agent.md) | 职责、任务路由与边界 | 随角色默认完整接入 |
+| [skills/sprite-devops-execute/SKILL.md](skills/sprite-devops-execute/SKILL.md) | 独立 Skill 入口 | 随角色默认完整接入 |
+| [skills/sprite-devops-prepare/SKILL.md](skills/sprite-devops-prepare/SKILL.md) | 独立 Skill 入口 | 随角色默认完整接入 |
+| [skills/sprite-devops-recover/SKILL.md](skills/sprite-devops-recover/SKILL.md) | 独立 Skill 入口 | 随角色默认完整接入 |
+| [skills/sprite-devops-release/SKILL.md](skills/sprite-devops-release/SKILL.md) | 独立 Skill 入口 | 随角色默认完整接入 |
 | [skills/sprite-devops-release/assets/templates/release-runbook.md](skills/sprite-devops-release/assets/templates/release-runbook.md) | 完整产物模板 | 随角色默认完整接入 |
-| [skills/sprite-devops-release/references/workflow.md](skills/sprite-devops-release/references/workflow.md) | 工作流与专业参考 | 随角色默认完整接入 |
+| [skills/sprite-devops-release/references/delivery.md](skills/sprite-devops-release/references/delivery.md) | 工作方法与专业参考 | 随角色默认完整接入 |
+| [skills/sprite-devops-release/references/workflow.md](skills/sprite-devops-release/references/workflow.md) | 工作方法与专业参考 | 随角色默认完整接入 |
 
-本职能力由 `sprite-devops-release` 提供，默认随角色接入，也可单独使用该 Skill。
-
-接入、加载检查和用户需要完成的步骤统一见 [接入手册](docs/installation.md)，不复制成业务文档。
-
-## 开始使用
-
-完成接入后，直接向 AI 描述任务，例如：
-
-> 请用 sprite-devops，检查项目真实发布方式，准备可执行的发布与恢复步骤，按本次已有授权执行并核对健康结果。
-
-客户端没有自动加载时，让 AI 先读取保存的角色文件或 Skill 入口。读取说明、写入项目和启动原生子代理是不同结果，按实际完成情况判断。
-
-角色以当前请求和项目已有约定为依据；待确定项只影响依赖它的工作，不要求其他角色、完整 PRD 或固定流程。
-
-## 留存与交接
-
-发布准备默认保存发布手册，写清前提、执行顺序、健康与观察窗口、回滚及恢复验证、负责人和待决定项。准备手册不代表已经部署；已有明确执行授权则按实际范围继续。内容详略随任务调整，复用已有文档的有效内容；小型答疑不强建空文档。本角色生成的发布手册、执行记录和发布/恢复验证证据（含日志、截图及附件）统一保存到业务仓库的 `docs/devops/`，可按功能在角色目录下再建子目录，例如 `docs/devops/<feature-id>/operations.md`。新增和更新产物均遵守此路径；已有散落产物先读取，在保留内容的前提下迁入角色目录，目标同名文件不得直接覆盖，迁移后同步相关引用和已有索引。产品代码、测试、CI/CD、IaC、部署配置及构建产物仍使用工程原生目录，角色与 Skill 安装资源保持原位。上游资料可从实际所在位置读取。交付实际文件的真实链接。
-
-角色可以自由组合；资料 host repo、版本和功能或文件由你指定，已有项目约定就沿用。当前任务确需跨 Git 读取、固定版本、比较或留存时，AI 会复用或按需补齐 artifact-bridge；普通本地资料和纯角色接入不安装它。目录、Git 与认证条件见 [产物交接说明](docs/artifact-handoff.md)。
-
-## 后续维护
-
-需要追加、更新或移除资源时，直接说明目标。AI 对照明确版本与现有文件比较，保留自定义，只处理指定范围；具体规则见 [手册](docs/installation.md#已有内容与后续维护)。
+</details>
